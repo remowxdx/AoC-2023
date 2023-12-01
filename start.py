@@ -8,7 +8,7 @@ import stat
 
 
 def retrieve_input(day):
-    url = f"https://adventofcode.com/2022/day/{day}/input"
+    url = f"https://adventofcode.com/2023/day/{day}/input"
     with open("session", "r") as f:
         cookie = f.read().strip()
     req = urllib.request.Request(url)
