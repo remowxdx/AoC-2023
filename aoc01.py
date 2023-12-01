@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+"""
+Advent of Code 2023, Day 1
+"""
 
 from aoc import check_solution, save_solution, test_eq
 
@@ -28,25 +31,27 @@ def get_first_digit(line):
     for char in line:
         if char.isdigit():
             return int(char)
+    return -1
 
 
 def get_last_digit(line):
     for char in reversed(line):
         if char.isdigit():
             return int(char)
+    return -1
 
 
 def get_digits(line):
     found = {}
-    for digit in DIGITS:
+    for digit, value in DIGITS.items():
         idx = line.find(digit)
         while idx >= 0:
-            found[idx] = DIGITS[digit]
+            found[idx] = value
             idx = line.find(digit, idx + 1)
     for pos, char in enumerate(line):
         if char.isdigit():
             found[pos] = int(char)
-    print(line, found)
+    # print(line, found)
     return found
 
 
@@ -61,23 +66,23 @@ def first_last(found):
 
 
 def part1(data):
-    s = 0
+    total = 0
     for line in data:
         if line == "":
             continue
         first = get_first_digit(line)
         last = get_last_digit(line)
         value = first * 10 + last
-        s += value
-    return s
+        total += value
+    return total
 
 
 def part2(data):
-    s = 0
+    total = 0
     for line in data:
         first, last = first_last(get_digits(line))
-        s += first * 10 + last
-    return s
+        total += first * 10 + last
+    return total
 
 
 def run_tests():
@@ -117,7 +122,7 @@ def run_part2(solved):
 def main():
     run_tests()
     run_part1(True)
-    run_part2(False)
+    run_part2(True)
 
 
 if __name__ == "__main__":

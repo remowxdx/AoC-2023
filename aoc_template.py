@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+"""
+Advent of Code 2023, Day %%day%%
+"""
 
 from aoc import check_solution, save_solution, test_eq
 
