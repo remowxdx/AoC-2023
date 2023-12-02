@@ -49,6 +49,10 @@ def parse_game(line):
     return game
 
 
+def power(game):
+    return game["red"] * game["green"] * game["blue"]
+
+
 def game_possible(line, bag):
     game = parse_game(line)
     if game["red"] <= bag[0] and game["green"] <= bag[1] and game["blue"] <= bag[2]:
@@ -64,7 +68,10 @@ def part1(data):
 
 
 def part2(data):
-    return None
+    power_sum = 0
+    for line in data:
+        power_sum += power(parse_game(line))
+    return power_sum
 
 
 def run_tests():
@@ -74,7 +81,7 @@ def run_tests():
     print()
 
     print("Test Part 2:")
-    test_eq("Test 2.1", part2, 42, test_input_1)
+    test_eq("Test 2.1", part2, 2286, test_input_1)
     print()
 
 
@@ -102,8 +109,8 @@ def run_part2(solved):
 
 def main():
     run_tests()
-    run_part1(False)
-    # run_part2(False)
+    run_part1(True)
+    run_part2(True)
 
 
 if __name__ == "__main__":
