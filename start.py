@@ -51,8 +51,16 @@ def write_template(day):
             )
 
 
+def save_start_time(day):
+    filename = "solutions/start"
+    now = datetime.datetime.now()
+    with open(filename, "a") as f:
+        f.write(f"Day {day} started at {now}.\n")
+
+
 if __name__ == "__main__":
     day = get_day()
 
     retrieve_input(day)
     write_template(day)
+    save_start_time(day)
