@@ -19,10 +19,23 @@ def parse_seeds(line):
     return [int(seed) for seed in seeds.split(" ")]
 
 
+def parse_seed_ranges(line):
+    _, seeds = line.split(": ")
+    start = None
+    seed_ranges = []
+    for num in seeds.split(" "):
+        if start is None:
+            start = int(num)
+        else:
+            seed_ranges.append((start, start + int(num)))
+            start = None
+    return seed_ranges
+
+
 def parse_map_type(line):
     map_type, _ = line.split(" ")
     source, _, destination = map_type.split("-")
-    print(source, destination)
+    # print(source, destination)
     return source, destination
 
 
@@ -56,13 +69,82 @@ def seed_to_location(maps, seed):
     to = "location"
     value = seed
     while from_ != to:
-        print(value, end="->")
+        # print(value, end="->")
         for src, dst in maps.keys():
             if src == from_:
                 value = map_src_to_dst(maps[(src, dst)], value)
                 from_ = dst
-    print(value)
+    # print(value)
     return value
+
+
+def map_src_rng_to_dst_rngs(map_, range_):
+    map_rngs = {}
+    map_limits = set()
+    for dst, src, rng in map_:
+        map_src_start = src
+        map_src_end = src + rng
+        map_dst_start = dst
+        map_dst_end = dst + rng
+        map_rngs[(map_src_start, map_src_end)] = (map_dst_start, map_dst_end)
+        map_limits.add(map_src_start)
+        map_limits.add(map_src_end)
+    map_limits.add(range_[0])
+    map_limits.add(range_[1])
+    # print("lim", sorted(map_limits))
+
+    split_values = []
+    for limit in sorted(map_limits):
+        if range_[0] <= limit <= range_[1]:
+            split_values.append(limit)
+
+    split_ranges = []
+    for num, value in enumerate(split_values[:-1]):
+        split_ranges.append((value, split_values[num + 1]))
+    print("rng:", split_ranges)
+    dst_rngs = []
+    for src_start, src_end in split_ranges:
+        done = False
+        # print("rngs:", map_rngs)
+        for map_src, map_dst in map_rngs.items():
+            map_src_start, map_src_end = map_src
+            if src_end <= map_src_start or src_start > map_src_end:
+                continue
+            # print("src:", map_src, "dst:", map_dst)
+            map_dst_start, map_dst_end = map_dst
+            delta = map_dst_start - map_src_start
+            dst_start = src_start + delta
+            dst_end = src_end + delta
+            dst_rngs.append((dst_start, dst_end))
+            done = True
+        if not done:
+            dst_rngs.append((src_start, src_end))
+
+    print(range_, end=" -> ")
+    print("dsts:", dst_rngs)
+    return dst_rngs
+
+
+def map_src_rngs_to_dst_rngs(map_, rngs):
+    dst_rngs = []
+    for rng in rngs:
+        dst_rng = map_src_rng_to_dst_rngs(map_, rng)
+        dst_rngs.extend(dst_rng)
+    return dst_rngs
+
+
+def seed_range_to_locations(maps, seed_range):
+    from_ = "seed"
+    to = "location"
+    rngs = [seed_range]
+    while from_ != to:
+        for src, dst in maps.keys():
+            if src == from_:
+                print("=============", src, rngs, end="->")
+                rngs = map_src_rngs_to_dst_rngs(maps[(src, dst)], rngs)
+                from_ = dst
+    print("locations:", rngs)
+    return rngs
 
 
 def part1(data):
@@ -77,7 +159,15 @@ def part1(data):
 
 
 def part2(data):
-    return None
+    seeds = parse_seed_ranges(data[0])
+
+    maps = parse_maps(data[2:])
+
+    locations = []
+    for seed_range in seeds:
+        locs = seed_range_to_locations(maps, seed_range)
+        locations.extend(locs)
+    return min([location[0] for location in locations if location[0] != 0])
 
 
 def run_tests():
@@ -87,7 +177,7 @@ def run_tests():
     print()
 
     print("Test Part 2:")
-    test_eq("Test 2.1", part2, 42, test_input_1)
+    test_eq("Test 2.1", part2, 46, test_input_1)
     print()
 
 
@@ -115,8 +205,8 @@ def run_part2(solved):
 
 def main():
     run_tests()
-    run_part1(False)
-    # run_part2(False)
+    run_part1(True)
+    run_part2(True)
 
 
 if __name__ == "__main__":
