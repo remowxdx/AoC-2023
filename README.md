@@ -25,3 +25,22 @@ All those `split` are not good!
 
 Anyway I solved the problem without much problems, once the script
 ran without error, the solution was right.
+
+## Day 5
+
+Part 1 a little complex but not too much.
+
+Part 2 complex in a way that I don't like, but solved anyway:
+kept track of start and end of every range, splitting ranges
+when going from one category to the next.
+
+I had location 0 as the minimum location, because of a off-by-one
+error. Corrected the next day.
+
+## Day 6
+
+Easy enough problem. I suspected that in part 2 you had to solve,
+the equation `record_distance = press_time · (race_time - press_time)`,
+but I solved anyway part 1 by brute force.
+
+And in fact in part 2 I solved the equation.
