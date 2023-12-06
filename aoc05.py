@@ -108,7 +108,7 @@ def map_src_rng_to_dst_rngs(map_, range_):
         # print("rngs:", map_rngs)
         for map_src, map_dst in map_rngs.items():
             map_src_start, map_src_end = map_src
-            if src_end <= map_src_start or src_start > map_src_end:
+            if src_end <= map_src_start or src_start >= map_src_end:
                 continue
             # print("src:", map_src, "dst:", map_dst)
             map_dst_start, map_dst_end = map_dst
@@ -167,7 +167,7 @@ def part2(data):
     for seed_range in seeds:
         locs = seed_range_to_locations(maps, seed_range)
         locations.extend(locs)
-    return min([location[0] for location in locations if location[0] != 0])
+    return min([location[0] for location in locations])
 
 
 def run_tests():
