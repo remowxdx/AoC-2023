@@ -89,6 +89,93 @@ class Hand:
         return f"Hand: {self.hand}, Bid: {self.bid}, Value: {self.value}"
 
 
+class Hand2:
+
+    STRENGTH = {
+        "A": 14,
+        "K": 13,
+        "Q": 12,
+        "J": 1,
+        "T": 10,
+        "9": 9,
+        "8": 8,
+        "7": 7,
+        "6": 6,
+        "5": 5,
+        "4": 4,
+        "3": 3,
+        "2": 2,
+    }
+
+    def __init__(self, line):
+        hand, value, bid = self.parse_hand(line)
+        self.hand = hand
+        self.value = value
+        self.bid = bid
+
+    def strength(self, face):
+        return self.STRENGTH[face]
+
+    @staticmethod
+    def parse_hand(line):
+        hand, bid_str = line.split()
+        bid = int(bid_str)
+        value = {}
+        joker = 0
+        for char in hand:
+            if char == "J":
+                joker += 1
+                continue
+            if char not in value:
+                value[char] = 0
+            value[char] += 1
+        if joker == 5:
+            value = {"A": 5}
+        else:
+            max_eq = max(value.values())
+            for face, num in value.items():
+                if num == max_eq:
+                    value[face] += joker
+                    break
+        return hand, value, bid
+
+    def type(self):
+        max_eq = max(self.value.values())
+        min_eq = min(self.value.values())
+        if max_eq == 5:
+            return 7
+        if max_eq == 4:
+            return 6
+        if max_eq == 3:
+            if min_eq == 2:
+                return 5
+            return 4
+        if max_eq == 2:
+            count_pairs = 0
+            for count in self.value.values():
+                if count == 2:
+                    count_pairs += 1
+            if count_pairs == 2:
+                return 3
+            return 2
+        if max_eq == 1:
+            return 1
+
+    def __gt__(self, other):
+        if self.type() > other.type():
+            return True
+        if self.type() < other.type():
+            return False
+        for idx in range(5):
+            ss = self.strength(self.hand[idx])
+            os = other.strength(other.hand[idx])
+            if ss != os:
+                return ss > os
+
+    def __str__(self):
+        return f"Hand: {self.hand}, Bid: {self.bid}, Value: {self.value}"
+
+
 def winnings(hands):
     total = 0
     for num, hand in enumerate(sorted(hands)):
@@ -105,7 +192,11 @@ def part1(data):
 
 
 def part2(data):
-    return None
+    hands = [Hand2(line) for line in data]
+    print()
+    for hand in sorted(hands):
+        print(hand)
+    return winnings(hands)
 
 
 def run_tests():
@@ -115,7 +206,7 @@ def run_tests():
     print()
 
     print("Test Part 2:")
-    test_eq("Test 2.1", part2, 42, test_input_1)
+    test_eq("Test 2.1", part2, 5905, test_input_1)
     print()
 
 
@@ -144,7 +235,7 @@ def run_part2(solved):
 def main():
     run_tests()
     run_part1(True)
-    # run_part2(False)
+    run_part2(True)
 
 
 if __name__ == "__main__":
