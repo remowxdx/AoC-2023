@@ -40,7 +40,22 @@ error. Corrected the next day.
 ## Day 6
 
 Easy enough problem. I suspected that in part 2 you had to solve,
-the equation `record_distance = press_time · (race_time - press_time)`,
+the equation $record\_distance = press\_time · (race\_time - press\_time)$,
 but I solved anyway part 1 by brute force.
 
-And in fact in part 2 I solved the equation.
+For the second part, I had to solve the equation
+
+$$r = p (t-p)$$
+$$r = pt - p^2$$
+$$p^2-pt+r=0$$
+$$x_{1,2} = {t \pm \sqrt{t^2-4r} \over 2}$$
+$$x_2 -x_1 = \sqrt{t^2-4r}$$
+
+to not have to wait too much time.
+
+## Day 7
+
+Interesting poker problem... did find it too much difficult.
+Found a relatively simple way to rank the `type` of the hand.
+That helped for part 2.
+
