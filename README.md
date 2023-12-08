@@ -46,9 +46,13 @@ but I solved anyway part 1 by brute force.
 For the second part, I had to solve the equation
 
 $$r = p (t-p)$$
+
 $$r = pt - p^2$$
+
 $$p^2-pt+r=0$$
+
 $$x_{1,2} = {t \pm \sqrt{t^2-4r} \over 2}$$
+
 $$x_2 -x_1 = \sqrt{t^2-4r}$$
 
 to not have to wait too much time (this just to see how
