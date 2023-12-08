@@ -51,7 +51,8 @@ $$p^2-pt+r=0$$
 $$x_{1,2} = {t \pm \sqrt{t^2-4r} \over 2}$$
 $$x_2 -x_1 = \sqrt{t^2-4r}$$
 
-to not have to wait too much time.
+to not have to wait too much time (this just to see how
+github renders math).
 
 ## Day 7
 
@@ -59,3 +60,18 @@ Interesting poker problem... did find it too much difficult.
 Found a relatively simple way to rank the `type` of the hand.
 That helped for part 2.
 
+## Day 8
+
+This is the type of probelms that I like...
+
+First part easily done in 12 minutes.
+
+Second part... I tried solved it assuming that every cycle could
+also pass thru many "Z" nodes and that the first nodes
+could also not be touched in subsequent cycles.
+
+Next time I'll just try with the least common multiple
+of the first time a "Z" node is touched.
+
+Anyway if multiple "Z" nodes are touched, my solution
+still doesn't work.
