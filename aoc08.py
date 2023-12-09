@@ -143,9 +143,9 @@ def part2(data):
 
 
 def run_tests():
-    test_input_1 = get_input(f"ex{DAY}.1")
-    test_input_2 = get_input(f"ex{DAY}.2")
-    test_input_3 = get_input(f"ex{DAY}.3")
+    test_input_1 = get_input(f"examples/ex{DAY}.1")
+    test_input_2 = get_input(f"examples/ex{DAY}.2")
+    test_input_3 = get_input(f"examples/ex{DAY}.3")
     print("Test Part 1:")
     test_eq("Test 1.1", part1, 2, test_input_1)
     test_eq("Test 1.2", part1, 6, test_input_2)
@@ -157,7 +157,7 @@ def run_tests():
 
 
 def run_part1(solved):
-    data = get_input(f"input{DAY}")
+    data = get_input(f"inputs/input{DAY}")
 
     result1 = part1(data)
     print("Part 1:", result1)
@@ -168,7 +168,7 @@ def run_part1(solved):
 
 
 def run_part2(solved):
-    data = get_input(f"input{DAY}")
+    data = get_input(f"inputs/input{DAY}")
 
     result2 = part2(data)
     print("Part 2:", result2)

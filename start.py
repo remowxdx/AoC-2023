@@ -15,7 +15,7 @@ def retrieve_input(day):
     req.add_header("Cookie", cookie)
     r = urllib.request.urlopen(req)
     s = r.read()
-    with open(f"input{day}", "wb") as f:
+    with open(f"inputs/input{day}", "wb") as f:
         f.write(s)
 
 

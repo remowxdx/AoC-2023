@@ -200,7 +200,7 @@ def part2(data):
 
 
 def run_tests():
-    test_input_1 = get_input(f"ex{DAY}")
+    test_input_1 = get_input(f"examples/ex{DAY}")
     print("Test Part 1:")
     test_eq("Test 1.1", part1, 6440, test_input_1)
     print()
@@ -211,7 +211,7 @@ def run_tests():
 
 
 def run_part1(solved):
-    data = get_input(f"input{DAY}")
+    data = get_input(f"inputs/input{DAY}")
 
     result1 = part1(data)
     print("Part 1:", result1)
@@ -222,7 +222,7 @@ def run_part1(solved):
 
 
 def run_part2(solved):
-    data = get_input(f"input{DAY}")
+    data = get_input(f"inputs/input{DAY}")
 
     result2 = part2(data)
     print("Part 2:", result2)
