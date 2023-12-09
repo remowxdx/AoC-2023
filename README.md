@@ -79,3 +79,9 @@ of the first time a "Z" node is touched.
 
 Anyway if multiple "Z" nodes are touched, my solution
 still doesn't work.
+
+
+## Day 9
+
+Ahhh, I like it when there is a clean, simple recursive
+solution! And that solution works!
