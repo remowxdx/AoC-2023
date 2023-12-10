@@ -85,3 +85,24 @@ still doesn't work.
 
 Ahhh, I like it when there is a clean, simple recursive
 solution! And that solution works!
+
+## Day 10
+
+This has been a long day...
+Nearly two hours to solve!
+
+Part 1 more or less straightforward, just create a grid with every cell
+having the cells that are connected to it, and explore the loop from the
+two sides until they encounter.
+
+In part 2 I remade the grid with "bigger resolution": every cell is transformed
+in 9 new cells, for example an "L" cell will be:
+
+```
+      .|.
+ L -> .L-
+      ...
+```
+
+That way I can flood the outside and then count what is not outside and
+on the loop.
