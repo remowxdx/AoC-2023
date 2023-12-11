@@ -27,7 +27,7 @@ def parse_universe(data):
     return row + 1, col + 1, universe
 
 
-def expand_universe(universe):
+def expand_universe(universe, age):
     height, width, galaxies = universe
 
     occupied_rows = set()
@@ -41,14 +41,14 @@ def expand_universe(universe):
     for row in range(height):
         shift_rows[row] = row + count
         if row not in occupied_rows:
-            count += 1
+            count += age - 1
 
     shift_cols = {}
     count = 0
     for col in range(width):
         shift_cols[col] = col + count
         if col not in occupied_cols:
-            count += 1
+            count += age - 1
 
     expanded_universe = set()
     for row, col in galaxies:
@@ -66,18 +66,31 @@ def sum_paths(universe):
     for from_ in galaxies:
         for to in galaxies:
             paths += min_path(from_, to)
-    return paths / 2
+    return paths // 2
 
 
 def part1(data):
     universe = parse_universe(data)
-    universe = expand_universe(universe)
+    universe = expand_universe(universe, 2)
     lens = sum_paths(universe)
     return lens
 
 
 def part2(data):
-    return None
+    universe = parse_universe(data)
+    universe = expand_universe(universe, 1_000_000)
+    lens = sum_paths(universe)
+    return lens
+
+
+def param_part2(age):
+    def part2_aged(data):
+        universe = parse_universe(data)
+        universe = expand_universe(universe, age)
+        lens = sum_paths(universe)
+        return lens
+
+    return part2_aged
 
 
 def run_tests():
@@ -87,7 +100,9 @@ def run_tests():
     print()
 
     print("Test Part 2:")
-    test_eq("Test 2.1", part2, 42, test_input_1)
+    test_eq("Test 2.1", param_part2(10), 1030, test_input_1)
+    test_eq("Test 2.1", param_part2(100), 8410, test_input_1)
+    test_eq("Test 2.1", param_part2(1_000_000), 82000210, test_input_1)
     print()
 
 
@@ -116,7 +131,7 @@ def run_part2(solved):
 def main():
     run_tests()
     run_part1(True)
-    # run_part2(False)
+    run_part2(True)
 
 
 if __name__ == "__main__":
