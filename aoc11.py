@@ -14,17 +14,13 @@ def get_input(filename):
     return lines.splitlines()
 
 
-class Universe:
-    pass
-
-
 def parse_universe(data):
     universe = set()
     for row, line in enumerate(data):
         for col, char in enumerate(line):
             if char == "#":
                 universe.add((row, col))
-    return row + 1, col + 1, universe
+    return len(data), len(data[0]), universe
 
 
 def expand_universe(universe, age):
@@ -56,16 +52,16 @@ def expand_universe(universe, age):
     return shift_rows[height - 1] + 1, shift_cols[width - 1] + 1, expanded_universe
 
 
-def min_path(from_, to):
-    return abs(from_[0] - to[0]) + abs(from_[1] - to[1])
+def min_path(from_, to_):
+    return abs(from_[0] - to_[0]) + abs(from_[1] - to_[1])
 
 
 def sum_paths(universe):
     _, _, galaxies = universe
     paths = 0
     for from_ in galaxies:
-        for to in galaxies:
-            paths += min_path(from_, to)
+        for to_ in galaxies:
+            paths += min_path(from_, to_)
     return paths // 2
 
 
