@@ -32,13 +32,42 @@ def find_mirror_row(pattern):
     length = len(pattern)
     # print(length)
     for num, row in enumerate(pattern[:-1]):
-        for mirrored in range(min(num + 1, length - num - 1)):
+        to_check = min(num + 1, length - num - 1)
+        mirrored = 0
+        for check in range(to_check):
             # print(f"test {num - mirrored}, {num + 1 + mirrored}")
-            if pattern[num - mirrored] == pattern[num + 1 + mirrored]:
-                continue
-            break
-        else:
-            # print("Mirror h:", num + 1)
+            if pattern[num - check] == pattern[num + 1 + check]:
+                mirrored += 1
+        if mirrored == to_check:
+            return num + 1
+    return 0
+
+
+def is_smudged(line1, line2):
+    count = 0
+    for a, b in zip(line1, line2):
+        if a != b:
+            count += 1
+    if count == 1:
+        # print(line1, line2)
+        return True
+    return False
+
+
+def find_smudged_mirror_row(pattern):
+    length = len(pattern)
+    # print(length)
+    for num, row in enumerate(pattern[:-1]):
+        to_check = min(num + 1, length - num - 1)
+        smudged = 0
+        mirrored = 0
+        for check in range(to_check):
+            # print(f"test {num - mirrored}, {num + 1 + mirrored}")
+            if pattern[num - check] == pattern[num + 1 + check]:
+                mirrored += 1
+            elif is_smudged(pattern[num - check], pattern[num + 1 + check]):
+                smudged += 1
+        if mirrored == to_check - 1 and smudged == 1:
             return num + 1
     return 0
 
@@ -67,7 +96,16 @@ def part1(data):
 
 
 def part2(data):
-    return None
+    patterns = parse_patterns(data)
+    total = 0
+    for pattern in patterns:
+        row = find_smudged_mirror_row(pattern)
+        if row == 0:
+            col = find_smudged_mirror_row(transpose(pattern))
+            total += col
+        else:
+            total += 100 * row
+    return total
 
 
 def run_tests():
@@ -77,7 +115,7 @@ def run_tests():
     print()
 
     print("Test Part 2:")
-    test_eq("Test 2.1", part2, 42, test_input_1)
+    test_eq("Test 2.1", part2, 400, test_input_1)
     print()
 
 
@@ -105,8 +143,8 @@ def run_part2(solved):
 
 def main():
     run_tests()
-    run_part1(False)
-    # run_part2(False)
+    run_part1(True)
+    run_part2(True)
 
 
 if __name__ == "__main__":
