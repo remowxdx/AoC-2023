@@ -125,3 +125,20 @@ a set with the coordinates of the galaxies.
 This way the second part was really easy to solve, I only needed
 to add more line in the shift dictionaries.
 
+
+## Day 12
+
+Part 1 done with too much effort... I have not found a fast way
+to solve this problem.
+The second part I was too tired to do it...
+On the 13th I found a somewhat faster way, but it's
+still too slow. I'll let the computer work all the night.
+Hopefully tomorrow I'll find the solution.
+
+
+## Day 13
+
+I liked this problem, even though I struggled with off by one
+errors.
+
+
