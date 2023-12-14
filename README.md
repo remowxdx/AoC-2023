@@ -142,3 +142,11 @@ I liked this problem, even though I struggled with off by one
 errors.
 
 
+## Day 14
+
+First part approachable, done with string manipulation.
+
+Then I redid everything with dict of stones, that took some time.
+
+But that solves part 2 in short time.
+
