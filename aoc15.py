@@ -22,7 +22,7 @@ def parse_init(data):
     return sequence
 
 
-def hash(string):
+def aoc_hash(string):
     value = 0
     for char in string:
         value += ord(char)
@@ -33,14 +33,14 @@ def hash(string):
 
 def part1(data):
     sequence = parse_init(data)
-    return sum([hash(step) for step in sequence])
+    return sum([aoc_hash(step) for step in sequence])
 
 
 def focusing_power(boxes):
     power = 0
     for num, box in enumerate(boxes):
         slot = 1
-        for lens, focus in box.items():
+        for focus in box.values():
             power += (num + 1) * slot * focus
             slot += 1
     return power
@@ -48,17 +48,17 @@ def focusing_power(boxes):
 
 def part2(data):
     sequence = parse_init(data)
-    boxes = [dict() for _ in range(256)]
+    boxes = [{} for _ in range(256)]
     for step in sequence:
         if step[-1] == "-":
             label = step[:-1]
-            box = hash(label)
+            box = aoc_hash(label)
             if label in boxes[box]:
                 del boxes[box][label]
         else:
             label, focus_str = step.split("=")
             focus = int(focus_str)
-            box = hash(label)
+            box = aoc_hash(label)
             boxes[box][label] = focus
 
     # print("\n".join([str(box) for box in boxes if box]))
