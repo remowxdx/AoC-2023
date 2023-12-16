@@ -150,3 +150,16 @@ Then I redid everything with dict of stones, that took some time.
 
 But that solves part 2 in short time.
 
+
+## Day 15
+
+This is the implementation of a hashmap, but in python there
+already is an hashmap.
+
+
+## Day 16
+
+I continued to have the same (false) result, until I noticed that a 
+beam reflection rule was wrong.
+
+Then everything was right and easy!
