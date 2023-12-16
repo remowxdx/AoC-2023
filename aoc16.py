@@ -65,6 +65,7 @@ def shoot_beam(beam, contr):
     beams = [beam]
     height, width = contr["s"]
     count = 0
+    beamed = {}
     while len(beams) > 0:
         beam = beams.pop()
         pos = (beam[0], beam[1])
@@ -74,43 +75,28 @@ def shoot_beam(beam, contr):
         if pos[0] >= height or pos[1] >= width:
             continue
 
-        if pos in contr:
-            if "b" in contr[pos]:
-                if beam[2] not in contr[pos]["b"]:
-                    contr[pos]["b"].append(beam[2])
-                else:
-                    continue
+        if pos in beamed:
+            if beam[2] not in beamed[pos]:
+                beamed[pos].append(beam[2])
             else:
-                contr[pos]["b"] = [beam[2]]
-                count += 1
+                continue
         else:
-            contr[pos] = {"b": [beam[2]]}
+            beamed[pos] = [beam[2]]
             count += 1
 
-        if "t" not in contr[pos]:
-            beams.append(next_pos(pos, beam[2]))
-        else:
+        if pos in contr:
             typ = contr[pos]["t"]
             for next_beam in reflect(beam, typ):
                 beams.append(next_beam)
-    return count
-
-
-def count_energized(contr):
-    count = 0
-    for pos in contr:
-        if pos == "s":
-            continue
-        if "b" in contr[pos]:
-            count += 1
+        else:
+            beams.append(next_pos(pos, beam[2]))
     return count
 
 
 def part1(data):
     contr = parse_contraption(data)
-    _ = shoot_beam((0, 0, ">"), contr)
-    ener = count_energized(contr)
-    return ener
+    count = shoot_beam((0, 0, ">"), contr)
+    return count
 
 
 def part2(data):
@@ -118,18 +104,14 @@ def part2(data):
     max_ener = 0
     height, width = contr["s"]
     for row in range(height):
-        c = parse_contraption(data)
-        count = shoot_beam((row, 0, ">"), c)
+        count = shoot_beam((row, 0, ">"), contr)
         max_ener = max(max_ener, count)
-        c = parse_contraption(data)
-        count = shoot_beam((row, width - 1, "<"), c)
+        count = shoot_beam((row, width - 1, "<"), contr)
         max_ener = max(max_ener, count)
     for col in range(width):
-        c = parse_contraption(data)
-        count = shoot_beam((0, col, "v"), c)
+        count = shoot_beam((0, col, "v"), contr)
         max_ener = max(max_ener, count)
-        c = parse_contraption(data)
-        count = shoot_beam((height - 1, col, "^"), c)
+        count = shoot_beam((height - 1, col, "^"), contr)
         max_ener = max(max_ener, count)
     return max_ener
 
