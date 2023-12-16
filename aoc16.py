@@ -114,7 +114,24 @@ def part1(data):
 
 
 def part2(data):
-    return None
+    contr = parse_contraption(data)
+    max_ener = 0
+    height, width = contr["s"]
+    for row in range(height):
+        c = parse_contraption(data)
+        count = shoot_beam((row, 0, ">"), c)
+        max_ener = max(max_ener, count)
+        c = parse_contraption(data)
+        count = shoot_beam((row, width - 1, "<"), c)
+        max_ener = max(max_ener, count)
+    for col in range(width):
+        c = parse_contraption(data)
+        count = shoot_beam((0, col, "v"), c)
+        max_ener = max(max_ener, count)
+        c = parse_contraption(data)
+        count = shoot_beam((height - 1, col, "^"), c)
+        max_ener = max(max_ener, count)
+    return max_ener
 
 
 def run_tests():
@@ -124,7 +141,7 @@ def run_tests():
     print()
 
     print("Test Part 2:")
-    test_eq("Test 2.1", part2, 42, test_input_1)
+    test_eq("Test 2.1", part2, 51, test_input_1)
     print()
 
 
@@ -153,7 +170,7 @@ def run_part2(solved):
 def main():
     run_tests()
     run_part1(True)
-    # run_part2(False)
+    run_part2(True)
 
 
 if __name__ == "__main__":
