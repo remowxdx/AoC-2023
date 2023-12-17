@@ -204,8 +204,8 @@ def run_part2(solved):
 
 def main():
     run_tests()
-    # run_part1(True)
-    run_part2(False)
+    run_part1(True)
+    run_part2(True)
 
 
 if __name__ == "__main__":

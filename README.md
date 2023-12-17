@@ -163,3 +163,16 @@ I continued to have the same (false) result, until I noticed that a
 beam reflection rule was wrong.
 
 Then everything was right and easy!
+
+
+## Day 17
+
+Oh, more than two hours... and it takes some time to find the
+path.
+I should have taken a different approach:
+instead of going step by step, add to the blocks to
+visit directly the blocks at the end of the
+allowed straight paths.
+
+Maybe later, if I have the time.
+
