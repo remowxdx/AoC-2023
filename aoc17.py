@@ -102,6 +102,61 @@ def find_min_path(start, city):
     return None
 
 
+def next_blocks_ultra(block, city):
+    next_dir = {
+        ">": [(0, 1, ">"), (1, 0, "v"), (-1, 0, "^")],
+        "<": [(0, -1, "<"), (1, 0, "v"), (-1, 0, "^")],
+        "v": [(1, 0, "v"), (0, -1, "<"), (0, 1, ">")],
+        "^": [(-1, 0, "^"), (0, -1, "<"), (0, 1, ">")],
+    }
+    height = len(city)
+    width = len(city[0])
+    row, col, direction = block
+    next_dirs = next_dir[direction[0]]
+    candidate_blocks = []
+    for dir_ in next_dirs:
+        if dir_[2] == direction[0]:
+            candidate_blocks.append((row + dir_[0], col + dir_[1], direction + dir_[2]))
+        elif len(direction) > 3:
+            candidate_blocks.append((row + dir_[0], col + dir_[1], dir_[2]))
+    next_blocks = []
+    for row, col, direction in candidate_blocks:
+        if (
+            row >= 0
+            and col >= 0
+            and row < height
+            and col < width
+            and len(direction) < 11
+        ):
+            next_blocks.append((row, col, direction))
+    return next_blocks
+
+
+def find_min_path_ultra(start, city):
+    visited = set()
+    to_visit = {}
+    to_visit[0] = [start]
+    height = len(city)
+    width = len(city[0])
+    max_far = 0
+    while len(to_visit) > 0:
+        heath, block = pop_block(to_visit)
+        far = block[0] + block[1]
+        if far > max_far:
+            max_far = far
+            print(heath, block, len(visited), len(to_visit))
+        if block in visited:
+            continue
+        # print(heath, block, end="")
+        visited.add(block)
+        if block[0] == height - 1 and block[1] == width - 1:
+            return heath
+        for next_block in next_blocks_ultra(block, city):
+            add_block(next_block, heath + block_heath(next_block, city), to_visit)
+        # print(next_blocks(block, city))
+    return None
+
+
 def part1(data):
     city = parse_city(data)
     min_path = find_min_path((0, 0, ">"), city)
@@ -109,7 +164,9 @@ def part1(data):
 
 
 def part2(data):
-    return None
+    city = parse_city(data)
+    min_path = find_min_path_ultra((0, 0, "v"), city)
+    return min_path
 
 
 def run_tests():
@@ -119,7 +176,7 @@ def run_tests():
     print()
 
     print("Test Part 2:")
-    test_eq("Test 2.1", part2, 42, test_input_1)
+    test_eq("Test 2.1", part2, 94, test_input_1)
     print()
 
 
@@ -147,8 +204,8 @@ def run_part2(solved):
 
 def main():
     run_tests()
-    run_part1(True)
-    # run_part2(False)
+    # run_part1(True)
+    run_part2(False)
 
 
 if __name__ == "__main__":
