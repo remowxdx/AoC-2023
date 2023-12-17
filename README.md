@@ -132,8 +132,16 @@ Part 1 done with too much effort... I have not found a fast way
 to solve this problem.
 The second part I was too tired to do it...
 On the 13th I found a somewhat faster way, but it's
-still too slow. I'll let the computer work all the night.
-Hopefully tomorrow I'll find the solution.
+still too slow. I let the computer work all the night,
+but still didn't terminate the computation.
+
+On day 17 I revisited the problem, changing my approach:
+instead of recursing on every "?", I splitted the record on the
+"."'s end multiplied the ways for every chunk.
+Still it wasn't fast enough, but adding a cache on the
+chunks I got a good enough speed. Now it takes about 20 seconds
+on my computer.
+
 
 
 ## Day 13
