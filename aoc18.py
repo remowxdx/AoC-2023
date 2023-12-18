@@ -38,6 +38,33 @@ def parse_plan(data):
     return grid, min_pos[0] - 1, min_pos[1] - 1, max_pos[0] + 2, max_pos[1] + 2
 
 
+def parse_plan_2(data):
+    directions = {"0": "R", "1": "D", "2": "L", "3": "U"}
+    path = []
+    pos = [0, 0]
+    max_pos = [0, 0]
+    min_pos = [0, 0]
+    for line in data:
+        _, _, instruction = line.split()
+        distance = int(instruction[2:-2], 16)
+        direction = directions[instruction[-2]]
+        if direction == "R":
+            pos[1] += distance
+        elif direction == "L":
+            pos[1] -= distance
+        elif direction == "D":
+            pos[0] += distance
+        elif direction == "U":
+            pos[0] -= distance
+        # print(distance, direction, pos)
+        max_pos[0] = max(max_pos[0], pos[0])
+        max_pos[1] = max(max_pos[1], pos[1])
+        min_pos[0] = min(min_pos[0], pos[0])
+        min_pos[1] = min(min_pos[1], pos[1])
+        path.append((distance, direction, pos[0], pos[1]))
+    return path, min_pos[0], min_pos[1], max_pos[0], max_pos[1]
+
+
 def neighbours(pos):
     return [
         (pos[0] + 1, pos[1]),
@@ -65,6 +92,23 @@ def exterior(grid, top, left, bottom, right):
     return visited
 
 
+def interior(path, top, left, bottom, right):
+    res = 0
+    lr = left + right
+    tb = top + bottom
+    for distance, direction, row, col in path:
+        if direction == "U":
+            res += distance * (lr - 2 * col)
+        elif direction == "D":
+            res += distance * (2 * col - lr)
+        elif direction == "R":
+            res += distance * (tb - 2 * row)
+        elif direction == "L":
+            res += distance * (2 * row - tb)
+        res += distance * 2
+    return res // 4 + 1
+
+
 def part1(data):
     grid, top, left, bottom, right = parse_plan(data)
     # print(grid, top, left, bottom, right)
@@ -74,7 +118,10 @@ def part1(data):
 
 
 def part2(data):
-    return None
+    path, top, left, bottom, right = parse_plan_2(data)
+    # print(path, top, left, bottom, right)
+    inter = interior(path, top, left, bottom, right)
+    return inter
 
 
 def run_tests():
@@ -84,7 +131,7 @@ def run_tests():
     print()
 
     print("Test Part 2:")
-    test_eq("Test 2.1", part2, 42, test_input_1)
+    test_eq("Test 2.1", part2, 952408144115, test_input_1)
     print()
 
 
@@ -113,7 +160,7 @@ def run_part2(solved):
 def main():
     run_tests()
     run_part1(True)
-    # run_part2(False)
+    run_part2(True)
 
 
 if __name__ == "__main__":
