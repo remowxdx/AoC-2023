@@ -35,6 +35,49 @@ class Rule:
             return None
         raise ValueError("Unknown rule.")
 
+    def dispatch(self, part):
+        if self.cat == "e":
+            return part, self.next, None
+        frm, to = part[self.cat]
+        if self.comp == ">":
+            if to > self.value:
+                sent = {
+                    "x": [part["x"][0], part["x"][1]],
+                    "m": [part["m"][0], part["m"][1]],
+                    "a": [part["a"][0], part["a"][1]],
+                    "s": [part["s"][0], part["s"][1]],
+                }
+                thru = {
+                    "x": [part["x"][0], part["x"][1]],
+                    "m": [part["m"][0], part["m"][1]],
+                    "a": [part["a"][0], part["a"][1]],
+                    "s": [part["s"][0], part["s"][1]],
+                }
+                sent[self.cat][0] = max(frm, self.value + 1)
+                thru[self.cat][1] = max(frm, self.value)
+                return sent, self.next, thru
+            else:
+                return None, None, part
+        else:
+            if frm < self.value:
+                sent = {
+                    "x": [part["x"][0], part["x"][1]],
+                    "m": [part["m"][0], part["m"][1]],
+                    "a": [part["a"][0], part["a"][1]],
+                    "s": [part["s"][0], part["s"][1]],
+                }
+                thru = {
+                    "x": [part["x"][0], part["x"][1]],
+                    "m": [part["m"][0], part["m"][1]],
+                    "a": [part["a"][0], part["a"][1]],
+                    "s": [part["s"][0], part["s"][1]],
+                }
+                sent[self.cat][1] = min(to, self.value - 1)
+                thru[self.cat][0] = min(to, self.value)
+                return sent, self.next, thru
+            else:
+                return None, None, part
+
 
 def get_input(filename):
     with open(filename, "r", encoding="ascii") as input_file:
@@ -91,6 +134,23 @@ def sum_of_parts(parts):
     return total
 
 
+def accepted_parts(part, workflow, workflows):
+    if workflow == "A":
+        return [part]
+    if workflow == "R":
+        return []
+    accepted = []
+    part_thru = part
+    for rule in workflows[workflow]:
+        if part_thru is None:
+            break
+        part_sent, next_workflow, part_thru = rule.dispatch(part_thru)
+        if part_sent is not None:
+            accepted.extend(accepted_parts(part_sent, next_workflow, workflows))
+    # print(workflow, accepted)
+    return accepted
+
+
 def part1(data):
     rules, parts = parse_workflow_parts(data)
     accepted = []
@@ -102,7 +162,21 @@ def part1(data):
 
 
 def part2(data):
-    return None
+    workflows, _ = parse_workflow_parts(data)
+    accepted = accepted_parts(
+        {"x": [1, 4000], "m": [1, 4000], "a": [1, 4000], "s": [1, 4000]},
+        "in",
+        workflows,
+    )
+    return sum(
+        [
+            (1 + p["x"][1] - p["x"][0])
+            * (1 + p["m"][1] - p["m"][0])
+            * (1 + p["a"][1] - p["a"][0])
+            * (1 + p["s"][1] - p["s"][0])
+            for p in accepted
+        ]
+    )
 
 
 def run_tests():
@@ -112,7 +186,7 @@ def run_tests():
     print()
 
     print("Test Part 2:")
-    test_eq("Test 2.1", part2, 42, test_input_1)
+    test_eq("Test 2.1", part2, 167409079868000, test_input_1)
     print()
 
 
@@ -141,7 +215,7 @@ def run_part2(solved):
 def main():
     run_tests()
     run_part1(True)
-    # run_part2(False)
+    run_part2(True)
 
 
 if __name__ == "__main__":
