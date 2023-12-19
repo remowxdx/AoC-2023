@@ -184,3 +184,13 @@ allowed straight paths.
 
 Maybe later, if I have the time.
 
+
+## Day 18
+
+
+## Day 19
+
+Long problem to solve, and also if you don't read accurately,
+it will never work!
+It took me too much time to find that the parts can be rated
+from **1** to 4000, and **not** from **0** to 4000.
