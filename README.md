@@ -187,6 +187,27 @@ Maybe later, if I have the time.
 
 ## Day 18
 
+I liked this problem, first part solved like day 10, by
+flooding the exterior.
+
+For part 2 I had to rethink the way.
+I thought that if I add the blocks on the left
+and subtract block on the right of trenches going
+down and viceversa of trenches going up,
+I count twice the block on the inside.
+
+```
+
+out  in->                    <-in   out
+---v+++++++#++++       +++#+++++++^----
+---v+++++++#++++  and  +++#+++++++^----
+---v+++++++#++++       +++#+++++++^----
+
+            ===#2222222#====
+            ===#2222222#====
+            ===#2222222#====
+```
+
 
 ## Day 19
 
