@@ -117,7 +117,6 @@ def part1(data):
 def part2(data):
     system = System(data)
     key_modules = system.sources[system.sources["rx"][0]]
-    print(key_modules)
     key_counts = {}
     for module in key_modules:
         key_counts[module] = 0
@@ -139,6 +138,7 @@ def part2(data):
             break
         if count % 10000 == 0:
             print(count)
+    print(key_counts)
     result = 1
     for cnt in key_counts.values():
         result *= cnt
@@ -183,7 +183,7 @@ def run_part2(solved):
 def main():
     run_tests()
     run_part1(True)
-    run_part2(False)
+    run_part2(True)
 
 
 if __name__ == "__main__":
