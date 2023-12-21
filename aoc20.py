@@ -78,6 +78,8 @@ class Module:
             self.state = 1 - self.state
             return [(self.name, dst, self.state) for dst in self.destinations]
         if self.type == "&":
+            if pulse == 0:
+                self.received = 0
             self.sources[source] = pulse
             for state in self.sources.values():
                 if state == 0:
@@ -87,6 +89,9 @@ class Module:
             return [(self.name, dst, pulse) for dst in self.destinations]
         if self.type == "u":
             # print("Output:", pulse)
+            if self.name == "rx" and pulse == 0:
+                print(f"{self.name} received {pulse} from {source}.")
+                self.received = pulse
             return []
         raise ValueError("Unknown module.")
 
@@ -110,7 +115,34 @@ def part1(data):
 
 
 def part2(data):
-    return None
+    system = System(data)
+    key_modules = system.sources[system.sources["rx"][0]]
+    print(key_modules)
+    key_counts = {}
+    for module in key_modules:
+        key_counts[module] = 0
+    # print(", ".join([module for module in system.modules]))
+    count = 0
+    while True:
+        _ = system.run()
+        count += 1
+        modules_found = 0
+        for module, cnt in key_counts.items():
+            if cnt == 0:
+                if system.modules[module].received == 0:
+                    key_counts[module] = count
+            if cnt > 0:
+                modules_found += 1
+        if modules_found == len(key_modules):
+            break
+        if system.modules["rx"].received == 0:
+            break
+        if count % 10000 == 0:
+            print(count)
+    result = 1
+    for cnt in key_counts.values():
+        result *= cnt
+    return result
 
 
 def run_tests():
@@ -122,7 +154,7 @@ def run_tests():
     print()
 
     print("Test Part 2:")
-    test_eq("Test 2.1", part2, 42, test_input_1)
+    # test_eq("Test 2.1", part2, 42, test_input_1)
     print()
 
 
@@ -151,7 +183,7 @@ def run_part2(solved):
 def main():
     run_tests()
     run_part1(True)
-    # run_part2(False)
+    run_part2(False)
 
 
 if __name__ == "__main__":
